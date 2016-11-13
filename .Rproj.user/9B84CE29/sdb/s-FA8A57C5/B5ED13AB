@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#\n# This is the server logic of a Shiny web application. You can run the \n# application by clicking 'Run App' above.\n#\n# Find out more about building applications with Shiny here:\n# \n#    http://shiny.rstudio.com/\n#\n\nlibrary(shiny)\nlibrary(DT)\n\nsource(\"R_FinanceData.R\")\nstockIndex <- \"FTSE\"\nindexMembers <- GetIndexMembers(stockIndex)\n\n\n# Define server logic required to draw a histogram\nshinyServer(function(input, output) {\n  \n  values <- reactiveValues(default = 0)\n  \n  observeEvent(input$cmdRefresh,{\n    values$default <- input$cmdRefresh\n  })\n  \n  \n  indexSummary.DT <- eventReactive(input$cmdRefresh , {\n    \n    indexSummary <- getQuote(indexMembers$Symbol, src=\"yahoo\")\n    indexSummary$Name <- indexMembers[match(row.names(indexSummary), indexMembers$Symbol), \"Name\"]\n    indexSummary <- indexSummary[, c( ncol(indexSummary), 1:(ncol(indexSummary)-1) ) ]\n    indexSummary.DT <- DT::datatable(indexSummary ,\n             options = list(\n                     order =  list(5, 'desc')))\n    \n    indexSummary.DT$x$data[, \"% Change\"] <- as.numeric(sub(\"%\",\"\",indexSummary.DT$x$data[, \"% Change\"]))/100\n    formatPercentage(indexSummary.DT, \"% Change\", 2)\n \n  \n    \n  })\n  \n  output$timeSeriesPlot <- renderPlot({\n    \n     getSymbols(input$lstStock, src=\"yahoo\")\n    \n      tempTS <- get(input$lstStock)\n      tempTS <- tempTS[ paste0(input$dtRange, collapse = \"/\")]\n    \n      plot(tempTS, main=input$lstStock )\n    \n  })\n  \n  output$membersTable <- DT::renderDataTable({\n    if(values$default == 0){\n      indexSummary <- getQuote(indexMembers$Symbol, src=\"yahoo\")\n      indexSummary$Name <- indexMembers[match(row.names(indexSummary), indexMembers$Symbol), \"Name\"]\n      indexSummary <- indexSummary[, c( ncol(indexSummary), 1:(ncol(indexSummary)-1) ) ]\n      indexSummary.DT <- DT::datatable(indexSummary ,\n                                       options = list(\n                                         order =  list(5, 'desc')))\n      \n      indexSummary.DT$x$data[, \"% Change\"] <- as.numeric(sub(\"%\",\"\",indexSummary.DT$x$data[, \"% Change\"]))/100\n      formatPercentage(indexSummary.DT, \"% Change\", 2)\n      \n    }\n    \n    else{\n      indexSummary.DT()\n    }\n    \n    \n  })\n  \n})\n",
+    "created" : 1478965361077.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2489259480",
+    "id" : "B5ED13AB",
+    "lastKnownWriteTime" : 1479074438,
+    "last_content_update" : 1479074438151,
+    "path" : "~/R Projects/Index Analysis/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

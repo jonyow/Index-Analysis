@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#\n# This is the user-interface definition of a Shiny web application. You can\n# run the application by clicking 'Run App' above.\n#\n# Find out more about building applications with Shiny here:\n# \n#    http://shiny.rstudio.com/\n#\n\nlibrary(shiny)\nlibrary(DT)\n\nsource(\"R_FinanceData.R\")\n  \n  \nstockIndex <- \"FTSE\"\nindexMembers <- GetIndexMembers(stockIndex)\n\n\n# indexSummary <- getQuote(indexMembers$Symbol, src=\"yahoo\")\n# indexSummary.DT <- DT::datatable(indexSummary)\n\n\n# Define UI for application that draws a histogram\nshinyUI(fluidPage(\n  \n  # Application title\n  titlePanel(\"Index Analysis\"),\n  \n  # Sidebar with a slider input for number of bins \n  sidebarLayout(\n    sidebarPanel(\n      \n       \n       selectInput(\"lstStock\", \"Choose Stock:\", indexMembers$Symbol, indexMembers$Symbol[1], FALSE, width=150),\n       \n       dateRangeInput(\"dtRange\", \"Select Date Range:\", \"2007-01-01\", Sys.Date(), \"2007-01-01\", Sys.Date()),\n       \n       actionButton(\"cmdRefresh\",\n                    \"Refresh Table\") \n       \n       \n    , width=3),\n    \n    # Show a plot of the generated distribution\n    mainPanel(\n       plotOutput(\"timeSeriesPlot\"),\n       \n       br(), br(), p(), br(), br(),\n       \n       dataTableOutput(\"membersTable\")\n       \n    \n       \n    )\n  )\n))\n",
+    "created" : 1478965360638.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "454026134",
+    "id" : "FF73CE0E",
+    "lastKnownWriteTime" : 1478993757,
+    "last_content_update" : 1478993757872,
+    "path" : "~/R Projects/Index Analysis/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
