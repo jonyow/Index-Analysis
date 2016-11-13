@@ -112,5 +112,3 @@ GetIndexMembersForPageIndex <- function(stockIndex, pageIndex){
 # 
 # View(indexMoves)
 
-ARM.L[]
-
