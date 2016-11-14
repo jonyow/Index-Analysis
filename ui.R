@@ -36,8 +36,10 @@ shinyUI(fluidPage(
        
        dateRangeInput("dtRange", "Select Date Range:", "2007-01-01", Sys.Date(), "2007-01-01", Sys.Date()),
        
+       selectInput("lstSource", "Choose Source:", c("google", "yahoo"), "google",  FALSE, width=150),
+       
        actionButton("cmdRefresh",
-                    "Refresh Table") 
+                    "Refresh Table", width=150) 
        
        
     , width=3),
@@ -45,8 +47,6 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
        plotOutput("timeSeriesPlot"),
-       
-       br(), br(), p(), br(), br(),
        
        dataTableOutput("membersTable")
        
