@@ -37,6 +37,7 @@ GetIndexMembers <- function(stockIndex){
   }
   
   indexTable <- indexTable[grepl("NaN N/A", indexTable$`Last Trade`, fixed=T)==FALSE ,]
+  
   return(indexTable)
   
   #grepl("NaN N/A", indexMembers$`Last Trade`, fixed=T)
@@ -80,6 +81,9 @@ GetIndexMembersForPageIndex <- function(stockIndex, pageIndex){
       indexMembersTemp <- indexMembersTemp[ (rowIndex+1):nrow(indexMembersTemp), ]
       
       indexMembersTemp$Symbol <- as.character( indexMembersTemp$Symbol)
+      
+      indexMembersTemp$Symbol.Google <- sub(".L","",  indexMembersTemp$Symbol, fixed=T)
+      
       indexMembersTemp$Name <- as.character( indexMembersTemp$Name)
       indexMembersTemp$'Last Trade' <- as.character( indexMembersTemp$'Last Trade')
       
